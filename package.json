@@ -1,0 +1,14 @@
+{
+  "name": "rollup-plugin-apply-sw-registration",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "Rollup plugin that appends minified service worker registration code to the end of the document body",
+  "author": "Pascal Schilp",
+  "license": "MIT",
+  "homepage": "https://github.com/thepassle/pwa-helpers",
+  "repository": "https://github.com/thepassle/pwa-helpers",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["rollup", "plugin"]
+}
