@@ -1,7 +1,8 @@
 const { parse, serialize } = require('parse5');
 const Terser = require('terser');
-const { createScript } = require('./dom5-utils.js');
-const { append, predicates, query } = require('./dom5-utils.js');
+const { createScript } = require('@open-wc/building-utils');
+const { append, predicates, query } = require('@open-wc/building-utils/dom5-fork');
+
 
 /**
  * @param {string} htmlString
