@@ -35,9 +35,9 @@ function applyServiceWorkerRegistration(htmlString) {
 
 /**
  * Takes the name of the index.html, and appends a minified service worker registration to the end of the document body
- * @param {String} htmlFileName 
+ * @param {String} [htmlFileName='index.html'] index.html
  */
-module.exports = function applySwRegistration(htmlFileName) {
+module.exports = function applySwRegistration(htmlFileName = 'index.html') {
   return {
     name: 'rollup-plugin-inject-service-worker',
     generateBundle(_, bundle) {
