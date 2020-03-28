@@ -6,9 +6,11 @@ const { append, predicates, query } = require('@open-wc/building-utils/dom5-fork
 
 /**
  * @param {string} htmlString
+ * @param {string} scope
  * @returns {string}
  */
-function applyServiceWorkerRegistration(htmlString) {
+function applyServiceWorkerRegistration(htmlString, scope) {
+  const addScope = !!scope;
   const documentAst = parse(htmlString);
   const body = query(documentAst, predicates.hasTagName('body'));
   const swRegistration = createScript(
@@ -17,7 +19,7 @@ function applyServiceWorkerRegistration(htmlString) {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker
-          .register('./sw.js')
+          .register('./sw.js'${addScope ? `,{ scope: '.${scope}' }` : ''})
           .then(function() {
             console.log('ServiceWorker registered.');
           })
@@ -35,14 +37,15 @@ function applyServiceWorkerRegistration(htmlString) {
 
 /**
  * Takes the name of the index.html, and appends a minified service worker registration to the end of the document body
- * @param {String} [htmlFileName='index.html'] index.html
+ * @param {String} [htmlFileName='index.html'] htmlFileName
+ * @param {String} [scope=''] scope
  */
-module.exports = function applySwRegistration(htmlFileName = 'index.html') {
+module.exports = function applySwRegistration(htmlFileName = 'index.html', scope = '') {
   return {
     name: 'rollup-plugin-inject-service-worker',
     generateBundle(_, bundle) {
       const htmlSource = bundle[htmlFileName].source;
-      bundle[htmlFileName].source = applyServiceWorkerRegistration(htmlSource);
+      bundle[htmlFileName].source = applyServiceWorkerRegistration(htmlSource, scope);
     },
   }
 }
