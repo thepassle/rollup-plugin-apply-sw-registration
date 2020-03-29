@@ -46,8 +46,7 @@ function applyServiceWorkerRegistration(htmlString, scope, base) {
 
 /**
  * Takes the name of the index.html, and appends a minified service worker registration to the end of the document body
- * @param {String} [htmlFileName='index.html'] htmlFileName
- * @param {String} [scope=''] scope
+ * @param {Options} options
  */
 module.exports = function applySwRegistration(options) {
   const _opts = { 
