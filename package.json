@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-apply-sw-registration",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "index.js",
   "description": "Rollup plugin that appends minified service worker registration code to the end of the document body",
   "author": "Pascal Schilp",
