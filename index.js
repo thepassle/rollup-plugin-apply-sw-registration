@@ -6,12 +6,12 @@ const { append, predicates, query } = require('@open-wc/building-utils/dom5-fork
 /**
  * @param {string} htmlString
  * @param {string} scope
- * @param {string} base
+ * @param {string} prefix
  * @returns {string}
  */
-function applyServiceWorkerRegistration(htmlString, scope, base) {
+function applyServiceWorkerRegistration(htmlString, scope, prefix, swName) {
   const addScope = !!scope;
-  const addbase = !!base;
+  const addPrefix = !!prefix;
   const documentAst = parse(htmlString);
   const body = query(documentAst, predicates.hasTagName('body'));
   const swRegistration = createScript(
@@ -20,7 +20,7 @@ function applyServiceWorkerRegistration(htmlString, scope, base) {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker
-          .register('./${addbase ? base : ''}sw.js'${addScope ? `,{ scope: '.${scope}' }` : ''})
+          .register('./${addPrefix ? `${prefix}/` : ''}${swName}'${addScope ? `,{ scope: './${scope}' }` : ''})
           .then(function() {
             console.log('ServiceWorker registered.');
           })
@@ -41,7 +41,8 @@ function applyServiceWorkerRegistration(htmlString, scope, base) {
  * @typedef {Object} Options
  * @property {String} [htmlFileName='index.html'] htmlFileName
  * @property {String} [scope=''] scope
- * @property {boolean} [base=''] - useful if you're using a <base> tag, example: base: 'foo/'
+ * @property {String} [prefix=''] prefix
+ * @property {String} [swName=''] swName
  */
 
 /**
@@ -52,7 +53,8 @@ module.exports = function applySwRegistration(options) {
   const _opts = { 
     htmlFileName: 'index.html',
     scope: '',
-    base: '',
+    prefix: '',
+    swName: 'sw.js',
     ...(options || {})
   };
 
@@ -60,7 +62,7 @@ module.exports = function applySwRegistration(options) {
     name: 'rollup-plugin-inject-service-worker',
     generateBundle(_, bundle) {
       const htmlSource = bundle[_opts.htmlFileName].source;
-      bundle[_opts.htmlFileName].source = applyServiceWorkerRegistration(htmlSource, _opts.scope, _opts.base);
+      bundle[_opts.htmlFileName].source = applyServiceWorkerRegistration(htmlSource, _opts.scope, _opts.prefix, _opts.swName);
     },
   }
 }
